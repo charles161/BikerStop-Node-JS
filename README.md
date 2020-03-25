@@ -17,3 +17,5 @@ npm start
 ```
 node index.js
 ```
+
+## Instructions for DB setup
