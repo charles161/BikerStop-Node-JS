@@ -1,4 +1,5 @@
-module.exports = (message) => ({
+module.exports = (message, errorResponse = {}) => ({
  message,
- status: 'error'
+ status: 'error',
+ response: errorResponse
 })

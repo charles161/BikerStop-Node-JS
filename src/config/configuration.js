@@ -1,7 +1,7 @@
 let Config = function () {
 	return {
-		dbPath : 'mongodb://localhost/BikerStop', 
+		dbPath: process.env.MONGODB_URL || 'mongodb://localhost/BikerStop',
 	};
 };
 
-module.exports = new Config();
+module.exports = Config();

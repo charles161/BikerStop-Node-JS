@@ -2,13 +2,14 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
-const connection= require("./src/connection/connection.js");
+const { connectToDb } = require("./src/connection/connection.js");
 const success = require("./src/helpers/responseHandlers/successHandler")
 const error = require("./src/helpers/responseHandlers/errorHandler")
 const mongoose = require('mongoose')
 
-connection.connectTodb;
+connectToDb((...something) => {
 
+})
 
 const app = express();
 const port = 7070;
@@ -20,9 +21,9 @@ app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const userRouter = require('./src/routes/user')();
-const itemRouter = require('./src/routes/item')();
-const orderRouter = require('./src/routes/order')();
+const userRouter = require('./src/routes/user.route')();
+const itemRouter = require('./src/routes/item.route')();
+const orderRouter = require('./src/routes/order.route')();
 app.use('/item', itemRouter);
 app.use('/order', orderRouter);
 app.use('/user', userRouter);
