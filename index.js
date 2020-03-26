@@ -2,12 +2,12 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
+const connection= require("./src/connection/connection.js");
 const success = require("./src/helpers/responseHandlers/successHandler")
 const error = require("./src/helpers/responseHandlers/errorHandler")
 const mongoose = require('mongoose')
 
-
-// mongoose.connect('mongodb://localhost/BikerStop');
+connection.connectTodb;
 
 
 const app = express();
