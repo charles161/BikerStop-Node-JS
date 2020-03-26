@@ -9,7 +9,7 @@ exports.connectToDb = function (callback) {
 		return;
 	}
 	// Establish the DB connection
-	mongoose.connect(config.dbPath, { useNewUrlParser: true, useUnifiedTopology: true });
+	mongoose.connect(config.dbPath, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false });
 	// Event for successfully connecting database
 	mongoose.connection.on("connected", function () {
 		callback(undefined, { msg: "connected", code: 200 });
