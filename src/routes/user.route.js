@@ -63,7 +63,7 @@ function router() {
 
        }
        if (result) {
-        let resUser = { ...user }
+        let resUser = user.hasOwnProperty("_doc") ? { ...user._doc } : { ...user }
         delete resUser.password
         sendResponse(res, 200, success("Successful Login", resUser))
         return
@@ -78,13 +78,13 @@ function router() {
 
  userRouter.route('/all')//gets all users
   .get((req, res) => {
-   User.find({}, "-password", (err, users) => {
+   User.find(null, "-password", (err, users) => {
     if (err) {
      sendResponse(res, 400, error("Couldn't get users", err))
      return
     }
     let resUsers = users.map(user => {
-     let resUser = { ...user }
+     let resUser = user.hasOwnProperty("_doc") ? { ...user._doc } : { ...user }
      delete resUser.password
      return resUser
     })
@@ -101,7 +101,7 @@ function router() {
      sendResponse(res, 400, error("user not found", err))
      return
     }
-    let resUser = { ...user }
+    let resUser = user.hasOwnProperty("_doc") ? { ...user._doc } : { ...user }
     delete resUser.password
     sendResponse(res, 200, success("Successful", resUser))
     return
@@ -118,7 +118,7 @@ function router() {
      sendResponse(res, 400, error("user not found", err))
      return
     }
-    sendResponse(res, 200, success("Successfully Updated", user))
+    sendResponse(res, 200, success("Successfully Updated", {}))
     return
    })
   })
