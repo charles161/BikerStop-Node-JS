@@ -4,6 +4,7 @@ const error = require('../helpers/responseHandlers/errorHandler')
 const success = require('../helpers/responseHandlers/successHandler')
 const { sendResponse } = require('../helpers/responseHandlers/responseSender')
 const User = require('../models/user.model');
+const Order = require('../models/order.model');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -60,12 +61,9 @@ function router() {
        if (err) {
         sendResponse(res, 400, error("Unable to login", {}))
         return
-
        }
        if (result) {
-        let resUser = user.hasOwnProperty("_doc") ? { ...user._doc } : { ...user }
-        delete resUser.password
-        sendResponse(res, 200, success("Successful Login", resUser))
+        sendResponse(res, 200, success("Successful Login", user))
         return
        }
        sendResponse(res, 400, error("Unable to login", {}))
@@ -83,12 +81,7 @@ function router() {
      sendResponse(res, 400, error("Couldn't get users", err))
      return
     }
-    let resUsers = users.map(user => {
-     let resUser = user.hasOwnProperty("_doc") ? { ...user._doc } : { ...user }
-     delete resUser.password
-     return resUser
-    })
-    sendResponse(res, 200, success("Successful", resUsers))
+    sendResponse(res, 200, success("Successful", users))
     return
    })
   });
@@ -96,14 +89,12 @@ function router() {
  userRouter.route("/:id")//gets a particular user by id
   .get((req, res) => {
    const { id } = req.params
-   User.findById(id, (err, user) => {
+   User.findById(id, "-password", (err, user) => {
     if (err) {
      sendResponse(res, 400, error("user not found", err))
      return
     }
-    let resUser = user.hasOwnProperty("_doc") ? { ...user._doc } : { ...user }
-    delete resUser.password
-    sendResponse(res, 200, success("Successful", resUser))
+    sendResponse(res, 200, success("Successful", user))
     return
    })
   })
@@ -131,8 +122,15 @@ function router() {
      sendResponse(res, 400, error("user not found", err))
      return
     }
-    sendResponse(res, 200, success("Successfully deleted", {}))
-    return
+    Order.deleteMany({
+     user_id: id
+    }, (err) => {
+     if (err) {
+      sendResponse(res, 200, success("Successfully deleted"))
+      return
+     }
+     sendResponse(res, 200, success("Successfully deleted", {}))
+    })
    })
   })
 

@@ -5,6 +5,8 @@ let error = require('../helpers/responseHandlers/errorHandler')
 let success = require('../helpers/responseHandlers/successHandler')
 let { sendResponse } = require('../helpers/responseHandlers/responseSender')
 const Item = require('../models/item.model');
+const Order = require('../models/order.model');
+
 
 function router() {
  itemRouter.route("/create")
@@ -76,7 +78,15 @@ function router() {
     if (err) {
      sendResponse(res, 400, error("Item not found", err))
     }
-    sendResponse(res, 200, success("Successfully deleted", {}))
+    Order.deleteMany({
+     item_id: id
+    }, (err) => {
+     if (err) {
+      sendResponse(res, 200, success("Successfully deleted"))
+      return
+     }
+     sendResponse(res, 200, success("Successfully deleted", {}))
+    })
    })
   })
 
