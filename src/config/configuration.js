@@ -1,6 +1,6 @@
 let Config = function () {
 	return {
-		dbPath: process.env.MONGODB_URL || 'mongodb://localhost/BikerStop',
+		dbPath: process.env.NODE_ENV == 'test' ? "mongodb://localhost/BikerStopTest" : process.env.MONGODB_URL || 'mongodb://localhost/BikerStop',
 	};
 };
 
